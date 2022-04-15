@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -58,5 +60,6 @@ public class CourseModel implements Serializable {
     //mostrando para curso que ele pode ter vários módulos:
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
     @Fetch(FetchMode.SUBSELECT) //ele vai fazer duas consultas: trazer o curso e em seguida busca todos os módulos relacionados ao curso
+
     private Set<ModuleModel> modules;
 }

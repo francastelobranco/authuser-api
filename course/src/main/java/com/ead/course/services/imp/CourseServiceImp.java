@@ -1,13 +1,46 @@
 package com.ead.course.services.imp;
 
+import com.ead.course.moldes.CourseModel;
+import com.ead.course.moldes.LessonModel;
+import com.ead.course.moldes.ModuleModel;
 import com.ead.course.repositories.CourseRepository;
+import com.ead.course.repositories.LessonRepository;
+import com.ead.course.repositories.ModuleRepository;
 import com.ead.course.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class CourseServiceImp implements CourseService {
 
     @Autowired
     CourseRepository courseRepository;
+
+    @Autowired
+    ModuleRepository moduleRepository;
+
+    @Autowired
+    LessonRepository lessonRepository;
+
+    @Transactional
+    @Override
+    public void delete(CourseModel courseModel) {
+        List<ModuleModel> moduleModelList = moduleRepository.findAllModulesIntoCourse(courseModel.getCourseID()){
+            if (!moduleModelList.isEmpty()){
+                for(ModuleModel module : moduleModelList){
+                    List<LessonModel> lessonModelList = lessonRepository.findAllLessonsIntoModule(module.getModuleId());
+                    if (!lessonModelList.isEmpty()){
+                        lessonRepository.deleteAll(lessonModelList);
+                    }
+                }
+                moduleRepository.deleteAll(moduleModelList);
+            }
+            courseRepository.delete(courseModel);
+        }
+    }
+
+
 }
