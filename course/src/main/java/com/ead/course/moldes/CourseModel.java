@@ -8,8 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,13 +18,13 @@ import java.util.UUID;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL) //na hora de serializar, tds os campos que estiverem nulos nã retornam
 @Entity
-@Table(name = "TB_COURSERS")
+@Table(name = "TB_COURSES")
 public class CourseModel implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID courseID;
+    private UUID courseId;
 
     @Column(nullable = false, length = 150)
     private String name;
